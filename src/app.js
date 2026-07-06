@@ -18,7 +18,7 @@ app.use(cors(
         credentials: true,
     }
 ));
-
+console.log("APP STARTED");
 app.use(express.json());
 app.use(cookieParser());
 app.use('/', testRouter);
