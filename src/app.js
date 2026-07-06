@@ -3,6 +3,7 @@ const { authRouter } = require('./routes/auth.js');
 const { profileRouter } = require('./routes/profile.js');
 const { connectionRouter } = require('./routes/request.js');
 const { userRouter } = require('./routes/user.js');
+const { testRouter } = require('./routes/test.js');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const dns = require("dns");
@@ -20,7 +21,7 @@ app.use(cors(
 
 app.use(express.json());
 app.use(cookieParser());
-
+app.use('/', testRouter);
 app.use('/auth', authRouter);
 app.use('/profile', profileRouter);
 app.use('/request', connectionRouter);

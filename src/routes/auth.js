@@ -1,11 +1,11 @@
 const express = require('express');
 const { User } = require('../models/user');
-const authRouter = express.Router();
 const { validateUser } = require('../utils/validation');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const USER_SAFE_DATA = "firstName lastName photoUrl age gender skills";
 const validator = require('validator');
+const authRouter = express.Router();
 
 authRouter.post('/signup', async (req, res) => {
     const newUser = new User(req.body);
