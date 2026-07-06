@@ -1,32 +1,39 @@
 const express = require('express');
-
+const { authRouter } = require('./routes/auth.js'); 
+const { profileRouter } = require('./routes/profile.js');
+const { connectionRouter } = require('./routes/request.js');
+const { userRouter } = require('./routes/user.js');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
+const dns = require("dns");
+const { connectDB } = require('./config/database');
 const app = express();
 const port = 7777;
+dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
-app.get('/data', (req, res) => {
-    const data = {firstName: "Tejas", lastName: "Katare", age: 22, city: "Pune" };
-    res.send(data);
-});
+app.use(cors(
+    {
+        origin: "http://localhost:5173",
+        credentials: true,
+    }
+));
 
-app.post('/data', (req, res) => {
-    const data = "Your data has been successfully added to the server.";
-    res.send(data);
-});
+app.use(express.json());
+app.use(cookieParser());
 
-app.delete('/data', (req, res) => {
-    const data = "Your data has been successfully deleted from the server.";
-    res.send(data);
-});
+app.use('/auth', authRouter);
+app.use('/profile', profileRouter);
+app.use('/request', connectionRouter);
+app.use('/user', userRouter);
 
-app.put('/data', (req, res) => {
-    const data = "Your data has been successfully updated in the server.";
-    res.send(data);
-});
+connectDB()
+    .then(() => {
+        console.log("Connected to the database successfully");
+        app.listen(port, () => {
+            console.log(`Server is running on port ${port}`);
+        });
+    })
+    .catch((err) => {
+        console.error("Failed to connect to the database:", err);
+    });
 
-app.use('/', (req, res) => {
-    res.send('Hello BKL Tejas!');
-});
-
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
