@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const { authRouter } = require('./routes/auth.js'); 
 const { profileRouter } = require('./routes/profile.js');
@@ -7,14 +8,14 @@ const { testRouter } = require('./routes/test.js');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const dns = require("dns");
-const { connectDB } = require('./config/database');
+const { connectDB } = require('./config/database.js');
 const app = express();
-const port = 7777;
+const port = process.env.PORT;
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 app.use(cors(
     {
-        origin: "http://localhost:5173",
+        origin: process.env.Frontend_URL,
         credentials: true,
     }
 ));

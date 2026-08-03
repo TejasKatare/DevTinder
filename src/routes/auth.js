@@ -13,7 +13,7 @@ authRouter.post('/signup', async (req, res) => {
         validateUser(newUser);
         await newUser.encryptPassword();
         await newUser.save();
-        const token = await jwt.sign({userId: newUser._id }, "Tejas@123");
+        const token = await jwt.sign({userId: newUser._id }, process.env.JWT_SECRET);
         const safeUserData = {};
         USER_SAFE_DATA.split(" ").forEach((key) => {
             safeUserData[key] = newUser[key];
@@ -38,7 +38,7 @@ authRouter.post('/login', async (req, res) => {
         if (!isMatch) {
             return res.status(401).json({"message": "Invalid password"});
         }
-        const token = await jwt.sign({userId: user._id }, "Tejas@123");
+        const token = await jwt.sign({userId: user._id }, process.env.JWT_SECRET);
         res.cookie("token", token);
         const safeUserData = {};
         USER_SAFE_DATA.split(" ").forEach((key) => {
@@ -52,6 +52,7 @@ authRouter.post('/login', async (req, res) => {
 });
 
 authRouter.post('/logout', (req, res) => {
+    console.log("hit logout");
     res.cookie("token", "", {expiresIn: new Date(Date.now())});
     res.send("Logged Out Successfully");
 });
