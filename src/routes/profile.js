@@ -6,7 +6,7 @@ const validator = require("validator");
 
 const profileRouter = express.Router();
 
-const USER_SAFE_DATA = "firstName lastName photoUrl age gender skills";
+const USER_SAFE_DATA = "_id firstName lastName photoUrl age gender skills";
 
 profileRouter.get("/getinfo", auth, (req, res) => {
   const safeUserData = {};

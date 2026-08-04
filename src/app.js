@@ -6,16 +6,20 @@ const { connectionRouter } = require('./routes/request.js');
 const { userRouter } = require('./routes/user.js');
 const { testRouter } = require('./routes/test.js');
 const cookieParser = require('cookie-parser');
+const http = require("http");
 const cors = require('cors');
 const dns = require("dns");
 const { connectDB } = require('./config/database.js');
+const initializeSocket = require('./utils/socket.js');
+const chatRouter = require('./routes/chat.js');
 const app = express();
 const port = process.env.PORT;
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
+require('./utils/cornjob.js');
 
 app.use(cors(
     {
-        origin: process.env.Frontend_URL,
+        origin: process.env.FrontEnd_URL,
         credentials: true,
     }
 ));
@@ -27,11 +31,15 @@ app.use('/auth', authRouter);
 app.use('/profile', profileRouter);
 app.use('/request', connectionRouter);
 app.use('/user', userRouter);
+app.use('/chat', chatRouter);
+
+const server = http.createServer(app);
+initializeSocket(server);
 
 connectDB()
     .then(() => {
         console.log("Connected to the database successfully");
-        app.listen(port, () => {
+        server.listen(port, () => {
             console.log(`Server is running on port ${port}`);
         });
     })

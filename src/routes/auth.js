@@ -3,7 +3,7 @@ const { User } = require('../models/user');
 const { validateUser } = require('../utils/validation');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const USER_SAFE_DATA = "firstName lastName photoUrl age gender skills";
+const USER_SAFE_DATA = "_id firstName lastName photoUrl age gender skills";
 const validator = require('validator');
 const authRouter = express.Router();
 
