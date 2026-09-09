@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { applyTimestamps } = require('./connection');
 
 const messageSchema = new mongoose.Schema(
     {
